@@ -1,0 +1,24 @@
+FROM node:20.18.0
+
+WORKDIR /frontend
+
+# Copy package.json and package-lock.json (or yarn.lock)
+COPY package*.json ./
+
+# temporary solution for using using calendar shadcn
+RUN npm config set legacy-peer-deps true
+
+# Install dependencies
+RUN npm install
+
+# Copy the rest of the frontend code
+COPY . .
+
+# Expose the Vite dev server port
+EXPOSE 5173
+
+# Use development mode
+ENV NODE_ENV=development
+
+# Start Vite with host flag
+CMD ["npm", "run", "dev", "--", "--host"]

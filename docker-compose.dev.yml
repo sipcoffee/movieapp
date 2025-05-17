@@ -1,0 +1,98 @@
+name: movie
+
+services:
+  pgdb:
+    image: postgres:15.8
+    container_name: db
+    env_file:
+      - .env.dev
+    ports:
+      - "5435:5432"
+    volumes:
+      - postgres_data_movie:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d movie_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - movie-dev-network
+
+  backend:
+    container_name: be
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.dev
+    env_file:
+      - .env.dev
+
+    command: >
+      sh -c "
+        echo 'Waiting for PostgreSQL...'
+        while ! nc -z pgdb 5432; do
+          echo 'PostgreSQL is unavailable - sleeping'
+          sleep 2
+        done
+        echo 'PostgreSQL is up - executing commands'
+
+        python manage.py makemigrations --noinput &&
+        python manage.py migrate --noinput &&
+
+      echo 'Starting Django server...' &&
+      python manage.py runserver 0.0.0.0:8000"
+    ports:
+      - "8006:8000"
+    volumes:
+      - ./backend:/django # Mount the entire backend directory
+    depends_on:
+      pgdb:
+        condition: service_healthy
+    networks:
+      - movie-dev-network
+
+  redis:
+    image: redis:7
+    container_name: redis
+    ports:
+      - "6379:6379"
+    networks:
+      - movie-dev-network
+
+  celery:
+    container_name: celery
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.dev
+    command: celery -A core worker --loglevel=info
+    volumes:
+      - ./backend:/django
+    depends_on:
+      - backend
+      - redis
+    env_file:
+      - .env.dev
+    networks:
+      - movie-dev-network
+
+  frontend:
+    container_name: fe
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    command: npm run dev -- --host
+    ports:
+      - "5175:3030"
+    volumes:
+      - "./frontend:/frontend"
+      - "/frontend/node_modules"
+    env_file:
+      - .env.dev
+    depends_on:
+      - backend
+    networks:
+      - movie-dev-network
+volumes:
+  postgres_data_movie:
+
+networks:
+  movie-dev-network:

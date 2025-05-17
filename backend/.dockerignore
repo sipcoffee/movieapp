@@ -1,0 +1,42 @@
+.gitignore
+# Ignore Python cache files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+
+# Ignore environment files
+.env
+*.env
+*.env.local
+
+# Ignore virtual environments
+venv/
+.env/
+*.venv/
+
+# Ignore database and migration files (optional)
+*.sqlite3
+*.db
+
+# Ignore logs
+logs/
+*.log
+
+# Ignore static and media files (optional, if they are not needed in the build)
+staticfiles/
+media/
+
+# Ignore compiled code and dependencies
+node_modules/
+dist/
+build/
+
+# Ignore IDE/editor files
+.vscode/
+.idea/
+*.iml
+
+# Ignore Docker-related files (optional)
+docker-compose.override.yml
