@@ -2,7 +2,7 @@
 
 Demo Link https://www.loom.com/share/a58dc51b42354fb493dccd5cf91b615e?sid=562391ec-ef90-4398-b76f-f2c512500d3b
 
-Tech stack used:
+Tech stack used:  
 🖥️ Frontend
 React.js |
 Vite |
