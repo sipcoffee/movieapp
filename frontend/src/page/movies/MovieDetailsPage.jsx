@@ -9,7 +9,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate, useParams } from "react-router-dom";
-import { TH1, TH2, THP } from "@/components/ui/typography";
+import { TH1, TH2, TH4, THP } from "@/components/ui/typography";
 import placeholderImage from "../../assets/placeholder.svg";
 import { useAuth } from "@/hooks/useAuth";
 import { useDeleteMovie, useGetMovieDetails } from "@/api/movies";
@@ -27,6 +27,7 @@ import {
 } from "@/context";
 import MovieRemoveDialog from "./components/MovieRemoveDialog";
 import MovieReplaceDialog from "./components/MovieReplaceDialog";
+import { Label } from "@/components/ui/label";
 
 const BASE_URL =
   import.meta.env.VITE_APP_BACKEND_API || "http://localhost:8006";
@@ -116,9 +117,11 @@ const MovieTitle = ({ title }) => {
 };
 
 const MovieAdded = ({ added }) => {
-  <div className="flex items-center gap-4 text-sm mb-6">
-    <span>{formatDate(added)}</span>
-  </div>;
+  return (
+    <div className="flex items-center gap-4 text-sm my-3">
+      <TH4>{formatDate(added)}</TH4>
+    </div>
+  );
 };
 
 const MovieActionButtons = ({ setIsPlaying }) => {
@@ -179,7 +182,7 @@ const MovieActionButtons = ({ setIsPlaying }) => {
 
 const MovieDescription = ({ description }) => {
   return (
-    <div className="container mx-auto px-6 md:px-12 py-1 mt-6">
+    <div className="container mx-6 px-6 md:px-6 py-1 mt-4 ">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         <div className="md:col-span-2">
           <TH2>Description</TH2>

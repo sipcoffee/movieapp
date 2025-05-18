@@ -24,7 +24,8 @@ import { Label } from "@/components/ui/label";
 import { useReplaceMovie } from "@/api/movies";
 import useValidatedMovieId from "@/hooks/useValidateMovieId";
 import { toast } from "sonner";
-import { QueryClient, useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
+import { getFilenameFromPath } from "@/helpers/strip-file-path";
 
 export const formSchema = z.object({
   video_file: z
@@ -53,7 +54,7 @@ export default function MovieReplaceDialog({ videoFile }) {
         <div className="flex flex-col gap-6">
           <div className="flex items-center gap-3">
             <Paperclip />
-            <Label>{videoFile}</Label>
+            <Label>{getFilenameFromPath(videoFile)}</Label>
           </div>
           <ReplaceMovieForm />
         </div>
