@@ -29,9 +29,10 @@ Run locally
 
 Installation
   1. Clone the repository
+  ##
   <tab><tab>code/git clone https://github.com/sipcoffee/movieapp.git
 
-  2. Environment Variables
+  3. Environment Variables
   - Use the exsiting environment variables or change it.
 
   3. Start Devlopment Server
